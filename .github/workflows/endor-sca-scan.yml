@@ -43,7 +43,9 @@ jobs:
           run_install: false
 
       - name: Install JS/TS dependencies
-        run: pnpm install
+        run: |
+          pnpm install
+          cd apps/mobile && pnpm install
 
       - name: Generate native iOS/Android app templates
         working-directory: apps/mobile
