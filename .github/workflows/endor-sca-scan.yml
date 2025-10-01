@@ -72,9 +72,12 @@ jobs:
           ls -la $ANDROID_HOME/tools/bin/ || echo "Android tools not found"
           echo ""
           echo "=== Debug: Git status ==="
-          # git check-ignore -v apps/mobile/android/*
-          # git status --ignored apps/mobile/android/*
-          # find . -name ".gitignore" -type f
+          echo "Testing git check-ignore..."
+          git check-ignore -v apps/mobile/android/* || echo "git check-ignore failed"
+          echo "Testing git status..."
+          git status --ignored apps/mobile/android/* || echo "git status failed"
+          echo "Testing find command..."
+          find . -name ".gitignore" -type f || echo "find command failed"
           echo ""
           echo "=== Debug: Running gradlew with verbose output ==="
           ./gradlew --version --stacktrace --info
