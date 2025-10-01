@@ -53,9 +53,9 @@ jobs:
         working-directory: apps/mobile/android
         run: |
           pwd
-          git check-ignore -v apps/mobile/android/*
-          git status --ignored apps/mobile/android/*
-          find . -name ".gitignore" -type f
+          git check-ignore -v . || echo "No ignored files found"
+          git status --ignored . || echo "Git status completed"
+          find . -name ".gitignore" -type f || echo "No .gitignore files found"
           ./gradlew
       - name: Endor Labs SCA Scan
         uses: endorlabs/github-action@main
