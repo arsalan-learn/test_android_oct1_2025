@@ -1,0 +1,14 @@
+{
+  "name": "test-android-endor-scan",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "install:mobile": "cd apps/mobile && pnpm install"
+  },
+  "devDependencies": {
+    "pnpm": "^8.0.0"
+  }
+}

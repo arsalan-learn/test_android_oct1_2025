@@ -1,0 +1,68 @@
+name: Endor SCA Scan
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      ENDOR_PNPM_ENABLED: true
+      ENDOR_SCAN_JVM_PARAMETERS: '-Xmx16384M,-Dendor.cg.asm=true,-Dendor.params.android.useAndroidX=true'
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Set up Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install SDK build-tools
+        run: |
+          sdkmanager "build-tools;35.0.0"
+      - name: Install CocoaPods
+        run: sudo gem install cocoapods
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+          run_install: false
+
+      - name: Install JS/TS dependencies
+        run: pnpm install
+
+      - name: Generate native iOS/Android app templates
+        working-directory: apps/mobile
+        run: pnpm run prebuild:clean
+
+      - name: Install Android dependencies
+        working-directory: apps/mobile/android
+        run: |
+          pwd
+          git check-ignore -v apps/mobile/android/*
+          git status --ignored apps/mobile/android/*
+          find . -name ".gitignore" -type f
+          ./gradlew
+      - name: Endor Labs SCA Scan
+        uses: endorlabs/github-action@main
+        with:
+          namespace: 'arsalan-learn'
+          pr: false
+          scan_secrets: false
+          scan_dependencies: true
+          enable_github_action_token: true
+          additional_args: '--bypass-host-check --quick-scan'
