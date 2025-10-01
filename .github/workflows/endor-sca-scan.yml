@@ -52,35 +52,11 @@ jobs:
       - name: Install Android dependencies
         working-directory: apps/mobile/android
         run: |
-          echo "=== Debug: Current directory and contents ==="
           pwd
-          ls -la
-          echo ""
-          echo "=== Debug: Gradle wrapper files ==="
-          ls -la gradlew
-          ls -la gradle/wrapper/
-          echo ""
-          echo "=== Debug: Environment variables ==="
-          echo "JAVA_HOME: $JAVA_HOME"
-          echo "ANDROID_HOME: $ANDROID_HOME"
-          echo "ANDROID_SDK_ROOT: $ANDROID_SDK_ROOT"
-          echo ""
-          echo "=== Debug: Java version ==="
-          java -version
-          echo ""
-          echo "=== Debug: Android SDK tools ==="
-          ls -la $ANDROID_HOME/tools/bin/ || echo "Android tools not found"
-          echo ""
-          echo "=== Debug: Git status ==="
-          echo "Testing git check-ignore..."
-          git check-ignore -v . || echo "git check-ignore failed"
-          echo "Testing git status..."
-          git status --ignored . || echo "git status failed"
-          echo "Testing find command..."
-          find . -name ".gitignore" -type f || echo "find command failed"
-          echo ""
-          echo "=== Debug: Running gradlew with verbose output ==="
-          ./gradlew --version --stacktrace --info
+          git check-ignore -v apps/mobile/android/*
+          git status --ignored apps/mobile/android/*
+          find . -name ".gitignore" -type f
+          ./gradlew
       - name: Endor Labs SCA Scan
         uses: endorlabs/github-action@main
         with:
