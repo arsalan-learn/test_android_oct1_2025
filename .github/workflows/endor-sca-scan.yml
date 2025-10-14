@@ -67,4 +67,4 @@ jobs:
           scan_secrets: false
           scan_dependencies: true
           enable_github_action_token: true
-          additional_args: '--bypass-host-check --quick-scan'
+          additional_args: '--bypass-host-check'
